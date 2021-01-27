@@ -8,6 +8,7 @@ import Player from "./Player";
 
 function findLastIndex(array, fn) {
   if (!array) return -1;
+  // eslint-disable-next-line
   if (!fn || typeof fn !== "function") throw `${fn} is not a function`;
   return array.reduceRight((prev, currentValue, currentIndex) => {
     if (prev > -1) return prev;
@@ -163,7 +164,7 @@ class Match extends Component {
     }, 10000);
 
     this.fetchWindowId = setInterval(() => {
-      if (this.fetchedWindowTimeStamp.length == 0) {
+      if (this.fetchedWindowTimeStamp.length === 0) {
         this.fetchWindow(+new Date() - 30 * 1000); // initial fetch
         return;
       }
