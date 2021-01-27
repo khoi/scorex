@@ -1,0 +1,559 @@
+@font-face {
+  font-family: "Colfax";
+  font-weight: normal;
+  src: url("https://lolstatic-a.akamaihd.net/webfonts/live/fonts/colfax/ColfaxWebRegular.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-family: "Colfax";
+  font-weight: bold;
+  src: url("https://lolstatic-a.akamaihd.net/webfonts/live/fonts/colfax/ColfaxWebMedium.woff2")
+    format("woff2");
+}
+
+html {
+  font-size: 10px;
+  box-sizing: border-box;
+  scrollbar-color: #252c32 #0a0e13;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  overflow-y: scroll;
+  background-color: #0f1519;
+  color: #fff;
+  line-height: 1.3125em;
+  font-family: "Colfax", Helvetica, sans-serif;
+  font-size: 1.6rem;
+}
+
+*,
+*:before,
+*:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+img {
+  border: 0;
+}
+
+.wrapper {
+  width: 100%;
+}
+
+.icon {
+  background-repeat: no-repeat;
+}
+
+.icon.inhibator {
+  background-image: url(./assets/inhibitor.svg);
+}
+
+.icon.baron {
+  background-image: url(./assets/baron.svg);
+}
+
+.icon.tower {
+  background-image: url(./assets/tower.svg);
+}
+
+.icon.kda {
+  background-image: url(./assets/kda.svg);
+}
+
+.icon.kill {
+  background-image: url(./assets/kill.svg);
+}
+
+.icon.gold {
+  background-image: url(./assets/gold.svg);
+}
+
+.icon.cs {
+  background-image: url(./assets/cs.svg);
+}
+
+.overview-pane {
+  background-color: #0a0e13;
+  border: 1px solid #252c32;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  line-height: 21px;
+}
+
+.event-header {
+  height: 60px;
+  border-bottom: 1px solid #252c32;
+}
+
+.EventMatchScore {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+}
+
+.EventMatchScore .match {
+  padding-top: 5px;
+}
+
+.EventMatchScore .match .teams {
+  display: flex;
+  padding: 8px 0;
+}
+
+.EventMatchScore .match .teams .team {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.EventMatchScore .match .teams .team:first-child {
+  text-align: right;
+}
+
+.EventMatchScore .match .teams .team:last-child {
+  flex-direction: row-reverse;
+}
+
+.EventMatchScore .match .teams .separator {
+  padding: 0 4px;
+  color: #8fa3b0;
+  font-size: 1.4rem;
+  letter-spacing: 0.1rem;
+  font-weight: bold;
+  line-height: 3.6rem;
+}
+
+.EventMatchScore .match .teams .team .tricode {
+  display: inline-block;
+  font-size: 1.8rem;
+  font-weight: bold;
+  line-height: 1em;
+}
+.EventMatchScore .match .teams .team .logo {
+  position: relative;
+  display: inline-block;
+  top: -2px;
+  padding: 0 10px;
+}
+
+.EventMatchScore .match .teams .team .logo .image {
+  height: 36px;
+  width: 36px;
+  vertical-align: middle;
+}
+
+.VodsGameSelector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  position: relative;
+  pointer-events: none;
+  border-bottom: 1px solid #252c32;
+}
+
+.VodsGameSelector.active-selection {
+  height: 48px;
+}
+
+.VodsGameSelector .games {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.VodsGameSelector .games .label {
+  color: #8fa3b0;
+  padding-right: 16px;
+}
+
+.VodsGameSelector .games .game.selected {
+  pointer-events: none;
+  color: #00c8c8;
+}
+
+.VodsGameSelector .games .game {
+  margin: 0 2px;
+  padding: 0 16px;
+  cursor: pointer;
+  position: relative;
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  height: 50%;
+  color: #687077;
+}
+
+.StatsTeams {
+  background-color: #0a0e13;
+  cursor: default;
+  animation: fadein 0.8s;
+}
+
+.StatsTeamsSummary {
+  padding: 8px 8px 0 8px;
+  border-bottom: 1px solid #252c32;
+}
+
+.StatsTeamsSummary .dragons {
+  display: flex;
+  margin-bottom: 12px;
+  min-height: 24px;
+}
+
+.StatsTeamsSummary .dragons .blue-team {
+  flex: 1;
+}
+
+.StatsTeamsSummary .dragons .blue-team .dragon {
+  margin-right: 10px;
+}
+
+.StatsTeamsSummary .dragons .dragon {
+  display: inline-block;
+  height: 18px;
+  width: 18px;
+  background-repeat: no-repeat;
+}
+
+
+.StatsTeamsSummary .dragons .dragon.cloud {
+  background-image: url(./assets/cloud-dragon.svg);
+}
+
+.StatsTeamsSummary .dragons .dragon.infernal {
+  background-image: url(./assets/infernal-dragon.svg);
+}
+
+.StatsTeamsSummary .dragons .dragon.ocean {
+  background-image: url(./assets/ocean-dragon.svg);
+}
+
+.StatsTeamsSummary .dragons .dragon.mountain {
+  background-image: url(./assets/mountain-dragon.svg);
+}
+
+.StatsTeamsSummary .dragons .dragon.elder {
+  background-image: url(./assets/elder-dragon.svg);
+}
+
+.StatsTeamsSummary .dragons .title {
+  flex: 1;
+  text-align: center;
+  color: #8fa3b0;
+  font-size: 1.4rem;
+  letter-spacing: 0.1rem;
+  font-weight: bold;
+}
+
+.StatsTeamsSummary .dragons .red-team {
+  text-align: right;
+  flex: 1;
+}
+
+.StatsTeamsSummary .dragons .red-team .dragon {
+  margin-left: 10px;
+}
+
+.StatsTeamsSummary .gold .bar {
+  display: flex;
+}
+
+.StatsTeamsSummary .gold .bar .blue-team {
+  flex: 1;
+  border-bottom: 4px solid #1580b6;
+  margin-right: 4px;
+}
+
+.StatsTeamsSummary .gold .bar .red-team {
+  flex: 1;
+  border-bottom: 4px solid #de2f2f;
+}
+
+.StatsTeamsSummary .gold .totals {
+  display: flex;
+  margin-top: 6px;
+  font-size: 1.8rem;
+  color: #fff;
+  font-weight: bold;
+}
+
+.StatsTeamsSummary .gold .totals .blue-team {
+  flex: 1;
+}
+
+.StatsTeamsSummary .gold .totals .title {
+  flex: 1;
+  text-align: center;
+  color: #8fa3b0;
+  font-size: 1.4rem;
+  letter-spacing: 0.1rem;
+  font-weight: bold;
+}
+
+.StatsTeamsSummary .gold .totals .red-team {
+  flex: 1;
+  text-align: right;
+}
+
+.StatsTeamsSummary .details {
+  display: flex;
+}
+
+.StatsTeamsSummary .details .blue-team {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 20px 8px 0;
+  margin-top: 15px;
+  border-right: 1px solid #252c32;
+}
+
+.StatsTeamsSummary .details .red-team {
+  display: flex;
+  flex: 1;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  padding: 0px 0 8px 20px;
+  margin-top: 15px;
+  text-align: right;
+}
+
+.StatsTeamsSummary .details .stat {
+  display: inline-block;
+  text-align: center;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: bold;
+  width: 24px;
+  height: 48px;
+}
+
+
+.StatsTeamsPlayers {
+  position: relative;
+  background-color: #0a0e13;
+  color: #fff;
+  display: flex;
+  cursor: pointer;
+}
+
+.StatsTeamsPlayers .player {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 1.6rem;
+  border-bottom: 1px solid #252c32;
+}
+
+.StatsTeamsPlayers .player.dead .wrapper {
+  filter: grayscale(100%)
+}
+
+.StatsTeamsPlayers .icon {
+  margin: 2px 5px 0 5px;
+  display: inline-block;
+  vertical-align: bottom;
+  line-height: 20px;
+}
+
+.StatsTeamsPlayers .player.selected {
+  pointer-events: none;
+  background-color: #000;
+}
+
+.StatsTeamsPlayers .player .name {
+  padding-bottom: 5px;
+  font-weight: bold;
+  flex-basis: 100%;
+}
+
+.StatsTeamsPlayers .player.dead .name {
+  color: red;
+}
+
+.StatsTeamsPlayers .player.low .name {
+  color: yellow;
+}
+
+.StatsTeamsPlayers .player .portrait {
+  position: relative;
+  flex-basis: 60px;
+  height: 60px;
+  width: 60px;
+}
+
+.StatsTeamsPlayers .player .portrait:before {
+  display: block;
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  right: -3px;
+  bottom: -3px;
+  z-index: 10;
+  border-radius: 33px;
+  border: 3px solid #0a0e13;
+}
+
+.StatsTeamsPlayers .player .portrait .wrapper {
+  width: 100%;
+  height: 100%;
+  background-color: #333;
+  border-radius: 30px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.StatsTeamsPlayers .player .portrait .image {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  transform: scale3d(1.1, 1.1, 1.1);
+}
+
+.StatsTeamsPlayers .player .portrait .level {
+  position: absolute;
+  left: -2px;
+  bottom: -2px;
+  background-color: #000;
+  border-radius: 12px;
+  padding-top: 1px;
+  text-align: center;
+  width: 23px;
+  height: 23px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border: 1px solid #252c32;
+  overflow: hidden;
+  z-index: 20;
+}
+
+.StatsTeamsPlayers .player .details {
+  flex: 1;
+}
+
+.StatsTeamsPlayers .blue-team {
+  flex: 1;
+  border-right: 1px solid #252c32;
+}
+
+.StatsTeamsPlayers .blue-team .player {
+  padding: 4px 0 4px 24px;
+  height: 120px;
+}
+
+.StatsTeamsPlayers .blue-team .player .details {
+  padding-left: 3px;
+}
+
+.StatsTeamsPlayers .blue-team .player .stat .icon {
+  float: left;
+  clear: left;
+}
+
+.StatsTeamsPlayers .red-team {
+  flex: 1;
+  align-items: flex-end;
+}
+
+.StatsTeamsPlayers .red-team .player {
+  padding: 4px 24px 4px 0;
+  height: 120px;
+  text-align: right;
+  flex-direction: row-reverse;
+}
+
+.StatsTeamsPlayers .red-team .player .portrait .level {
+  left: auto;
+  right: -2px;
+}
+
+.StatsTeamsPlayers .red-team .player .details {
+  padding-right: 3px;
+}
+
+.StatsTeamsPlayers .red-team .player .stat .icon {
+  float: right;
+  clear: right;
+}
+
+.StatsTeamsPlayers .gold-diffs {
+  position: absolute;
+  pointer-events: none;
+  width: 100%;
+  text-align: center;
+  visibility: hidden;
+  left: 0;
+}
+
+.StatsTeamsPlayers .gold-diffs .diff {
+  display: inline-block;
+  position: relative;
+  top: 80px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1.4rem;
+  height: 24px;
+  width: 58px;
+  background-color: #0a0e13;
+}
+
+.StatsTeamsPlayers .gold-diffs .wrapper {
+  height: 120px;
+}
+
+.StatsTeamsPlayers .gold-diffs .diff.blue {
+  border-color: #1580b6;
+  color: #1580b6;
+  padding-right: 2px;
+  visibility: visible;
+}
+
+.StatsTeamsPlayers .gold-diffs .diff.blue:before {
+  content: "\25C0";
+  font-family: "Segoe UI Symbol";
+  font-size: 0.7rem;
+  vertical-align: top;
+  padding-right: 4px;
+}
+
+.StatsTeamsPlayers .gold-diffs .diff.red {
+  border-color: #de2f2f;
+  color: #de2f2f;
+  visibility: visible;
+}
+
+.StatsTeamsPlayers .gold-diffs .diff.red:after {
+  content: "\25B6";
+  font-family: "Segoe UI Symbol";
+  font-size: 0.7rem;
+  vertical-align: top;
+  padding-left: 4px;
+}
+
+.StatsTeamsPlayers .gold-diffs .diff.hidden {
+  display: none;
+}
