@@ -363,7 +363,7 @@ class Match extends Component {
                     <img alt="" src={killIcon} />
                     <Animatable
                       value={`${blueKills} ${
-                        isBlueFB(this.state.window) ? "FB" : ""
+                        isBlueFB(this.state.window) ? "F" : ""
                       }`}
                     />
                   </div>
@@ -385,7 +385,7 @@ class Match extends Component {
                     <img alt="" src={killIcon} />
                     <Animatable
                       value={`${redKills} ${
-                        isRedFB(this.state.window) ? "FB" : ""
+                        isRedFB(this.state.window) ? "F" : ""
                       }`}
                     />
                   </div>
