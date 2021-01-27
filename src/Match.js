@@ -147,7 +147,7 @@ class Match extends Component {
       ];
 
       this.fetchWindow(nextTimeStamp + 10 * 1000); // initial fetch
-    }, 1000);
+    }, 500);
   }
 
   componentWillUnmount() {
