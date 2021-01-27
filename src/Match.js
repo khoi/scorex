@@ -302,13 +302,19 @@ class Match extends Component {
                 </div>
                 <div className="totals">
                   <div className="blue-team">
-                    {getLastFrame(this.state.window).blueTeam.totalGold}
+                    {getLastFrame(this.state.window).blueTeam.totalGold} (
+                    {getLastFrame(this.state.window).blueTeam.totalGold -
+                      getLastFrame(this.state.window).redTeam.totalGold}
+                    )
                   </div>
                   <div className="title">
                     {getLastFrame(this.state.window).gameState.toUpperCase()}
                   </div>
                   <div className="red-team">
-                    {getLastFrame(this.state.window).redTeam.totalGold}
+                    {getLastFrame(this.state.window).redTeam.totalGold} (
+                    {getLastFrame(this.state.window).redTeam.totalGold -
+                      getLastFrame(this.state.window).blueTeam.totalGold}
+                    )
                   </div>
                 </div>
               </div>
