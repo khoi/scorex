@@ -6,6 +6,16 @@ import towerIcon from "./assets/tower.svg";
 import killIcon from "./assets/kill.svg";
 import Player from "./Player";
 
+function findLastIndex(array, fn) {
+  if (!array) return -1;
+  if (!fn || typeof fn !== "function") throw `${fn} is not a function`;
+  return array.reduceRight((prev, currentValue, currentIndex) => {
+    if (prev > -1) return prev;
+    if (fn(currentValue, currentIndex)) return currentIndex;
+    return -1;
+  }, -1);
+}
+
 function getRoundedTimeStamp(e) {
   return Math.floor(e / 10000) * 10000;
 }
@@ -48,6 +58,22 @@ function getBluePlayersStats(window) {
 
 function getRedPlayersStats(window) {
   return getLastFrame(window).redTeam.participants;
+}
+
+function blueFirstBloodFrameIdx(window) {
+  return findLastIndex(window.frames, (f) => f.blueTeam.totalKills > 0);
+}
+
+function redFirstBloodFrameIdx(window) {
+  return findLastIndex(window.frames, (f) => f.redTeam.totalKills > 0);
+}
+
+function isBlueFB(window) {
+  return blueFirstBloodFrameIdx(window) > redFirstBloodFrameIdx(window);
+}
+
+function isRedFB(window) {
+  return redFirstBloodFrameIdx(window) > blueFirstBloodFrameIdx(window);
 }
 
 const Animatable = ({ value }) => (
@@ -334,7 +360,11 @@ class Match extends Component {
                   </div>
                   <div className="stat kills">
                     <img alt="" src={killIcon} />
-                    <Animatable value={blueKills} />
+                    <Animatable
+                      value={`${blueKills} ${
+                        isBlueFB(this.state.window) ? "FB" : ""
+                      }`}
+                    />
                   </div>
                 </div>
                 <div className="red-team">
@@ -352,7 +382,11 @@ class Match extends Component {
                   </div>
                   <div className="stat kills">
                     <img alt="" src={killIcon} />
-                    <Animatable value={redKills} />
+                    <Animatable
+                      value={`${redKills} ${
+                        isRedFB(this.state.window) ? "FB" : ""
+                      }`}
+                    />
                   </div>
                 </div>
               </div>
