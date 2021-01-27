@@ -559,7 +559,7 @@ img {
 
 .animatable {
   animation-name: scale;
-  animation-duration: 0.75s;
+  animation-duration: 1s;
   transform: scale(1);
   color: white;
 }
