@@ -50,8 +50,8 @@ function getRedPlayersStats(window) {
   return getLastFrame(window).redTeam.participants;
 }
 
-const Important = ({ value }) => (
-  <span class="important" key={value}>
+const Animatable = ({ value }) => (
+  <span class="important animatable" key={value}>
     {value}
   </span>
 );
@@ -264,7 +264,9 @@ class Match extends Component {
                 <div className="blue-team">
                   {getLastFrame(this.state.window).blueTeam.dragons.map(
                     (d, i) => {
-                      return <div key={i} className={"dragon " + d} />;
+                      return (
+                        <div key={i} className={"animatable dragon " + d} />
+                      );
                     }
                   )}
                 </div>
@@ -272,7 +274,9 @@ class Match extends Component {
                 <div className="red-team">
                   {getLastFrame(this.state.window).redTeam.dragons.map(
                     (d, i) => {
-                      return <div key={i} className={"dragon " + d} />;
+                      return (
+                        <div key={i} className={"animatable dragon " + d} />
+                      );
                     }
                   )}
                 </div>
@@ -312,37 +316,37 @@ class Match extends Component {
                 <div className="blue-team">
                   <div className="stat inhibitors">
                     <img alt="" src={inhibitorIcon} />
-                    <Important value={blueInhibitors} />
+                    <Animatable value={blueInhibitors} />
                   </div>
                   <div className="stat barons">
                     <img alt="" src={baronIcon} />
-                    <Important value={blueBarons} />
+                    <Animatable value={blueBarons} />
                   </div>
                   <div className="stat towers">
                     <img alt="" src={towerIcon} />
-                    <Important value={blueTowers} />
+                    <Animatable value={blueTowers} />
                   </div>
                   <div className="stat kills">
                     <img alt="" src={killIcon} />
-                    <Important value={blueKills} />
+                    <Animatable value={blueKills} />
                   </div>
                 </div>
                 <div className="red-team">
                   <div className="stat inhibitors">
                     <img alt="" src={inhibitorIcon} />
-                    <Important value={redInhibitors} />
+                    <Animatable value={redInhibitors} />
                   </div>
                   <div className="stat barons">
                     <img alt="" src={baronIcon} />
-                    <Important value={redBarons} />
+                    <Animatable value={redBarons} />
                   </div>
                   <div className="stat towers">
                     <img alt="" src={towerIcon} />
-                    <Important value={redTowers} />
+                    <Animatable value={redTowers} />
                   </div>
                   <div className="stat kills">
                     <img alt="" src={killIcon} />
-                    <Important value={redKills} />
+                    <Animatable value={redKills} />
                   </div>
                 </div>
               </div>

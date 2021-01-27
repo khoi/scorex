@@ -558,21 +558,28 @@ img {
   display: none;
 }
 
-.important {
+.animatable {
   animation-name: scale;
   animation-duration: 0.75s;
   transform: scale(1);
+  color: white;
+}
+
+.important {
   display: inline-block;
 }
 
 @keyframes scale {
   0% {
     transform: scale(1);
+    color: white;
   }
   50% {
     transform: scale(3);
+    color: green;
   }
   100% {
     transform: scale(1);
+    color: white;
   }
 }
