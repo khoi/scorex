@@ -4,9 +4,6 @@ import inhibitorIcon from "./assets/inhibitor.svg";
 import baronIcon from "./assets/baron.svg";
 import towerIcon from "./assets/tower.svg";
 import killIcon from "./assets/kill.svg";
-import kdaIcon from "./assets/kda.svg";
-import csIcon from "./assets/cs.svg";
-import goldIcon from "./assets/gold.svg";
 import Player from "./Player";
 
 function getRoundedTimeStamp(e) {
@@ -93,7 +90,7 @@ class Match extends Component {
       if (!this.state.gameId) {
         // no game id redirect to the most feasible game
         let g =
-          res.data.event.match.games.find((a) => a.state == "inProgress") ||
+          res.data.event.match.games.find((a) => a.state === "inProgress") ||
           res.data.event.match.games[res.data.event.match.games.length - 1];
         window.location.href = `/match/${this.state.eventId}/${g.id}`;
         return;
