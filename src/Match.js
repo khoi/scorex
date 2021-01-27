@@ -138,7 +138,7 @@ class Match extends Component {
 
     this.fetchWindowId = setInterval(() => {
       if (this.fetchedWindowTimeStamp.size == 0) {
-        this.fetchWindow(+new Date() - 20 * 1000); // initial fetch
+        this.fetchWindow(+new Date() - 30 * 1000); // initial fetch
         return;
       }
 
