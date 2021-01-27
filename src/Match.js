@@ -50,6 +50,11 @@ function getRedPlayersStats(window) {
   return getLastFrame(window).redTeam.participants;
 }
 
+const Important = ({ value }) => (
+  <span class="important" key={value}>
+    {value}
+  </span>
+);
 class Match extends Component {
   async getEventDetails(id) {
     let res = await fetch(
@@ -152,6 +157,38 @@ class Match extends Component {
 
   render() {
     console.log(this.state);
+
+    const blueInhibitors = this.state.window
+      ? getLastFrame(this.state.window).blueTeam.inhibitors
+      : 0;
+    const blueBarons = this.state.window
+      ? getLastFrame(this.state.window).blueTeam.barons
+      : 0;
+    const blueTowers = this.state.window
+      ? getLastFrame(this.state.window).blueTeam.towers
+      : 0;
+    const blueKills = this.state.window
+      ? getBluePlayersStats(this.state.window).reduce(
+          (acc, val) => acc + val.kills,
+          0
+        )
+      : 0;
+
+    const redInhibitors = this.state.window
+      ? getLastFrame(this.state.window).redTeam.inhibitors
+      : 0;
+    const redBarons = this.state.window
+      ? getLastFrame(this.state.window).redTeam.barons
+      : 0;
+    const redTowers = this.state.window
+      ? getLastFrame(this.state.window).redTeam.towers
+      : 0;
+    const redKills = this.state.window
+      ? getRedPlayersStats(this.state.window).reduce(
+          (acc, val) => acc + val.kills,
+          0
+        )
+      : 0;
 
     let header = this.state.event ? (
       <>
@@ -275,43 +312,37 @@ class Match extends Component {
                 <div className="blue-team">
                   <div className="stat inhibitors">
                     <img alt="" src={inhibitorIcon} />
-                    {getLastFrame(this.state.window).blueTeam.inhibitors}
+                    <Important value={blueInhibitors} />
                   </div>
                   <div className="stat barons">
                     <img alt="" src={baronIcon} />
-                    {getLastFrame(this.state.window).blueTeam.barons}
+                    <Important value={blueBarons} />
                   </div>
                   <div className="stat towers">
                     <img alt="" src={towerIcon} />
-                    {getLastFrame(this.state.window).blueTeam.towers}
+                    <Important value={blueTowers} />
                   </div>
                   <div className="stat kills">
                     <img alt="" src={killIcon} />
-                    {getBluePlayersStats(this.state.window).reduce(
-                      (acc, val) => acc + val.kills,
-                      0
-                    )}
+                    <Important value={blueKills} />
                   </div>
                 </div>
                 <div className="red-team">
                   <div className="stat inhibitors">
                     <img alt="" src={inhibitorIcon} />
-                    {getLastFrame(this.state.window).redTeam.inhibitors}
+                    <Important value={redInhibitors} />
                   </div>
                   <div className="stat barons">
                     <img alt="" src={baronIcon} />
-                    {getLastFrame(this.state.window).redTeam.barons}
+                    <Important value={redBarons} />
                   </div>
                   <div className="stat towers">
                     <img alt="" src={towerIcon} />
-                    {getLastFrame(this.state.window).redTeam.towers}
+                    <Important value={redTowers} />
                   </div>
                   <div className="stat kills">
                     <img alt="" src={killIcon} />
-                    {getRedPlayersStats(this.state.window).reduce(
-                      (acc, val) => acc + val.kills,
-                      0
-                    )}
+                    <Important value={redKills} />
                   </div>
                 </div>
               </div>
