@@ -186,7 +186,7 @@ class Match extends Component {
         <div className="VodsGameSelector active-selection">
           <div className="games">
             <span className="label">GAME</span>
-            {this.state.event.match.games.map((value, idx) => {
+            {this.state.event.match.games.filter(g => g.state !== "unneeded").map((value, idx) => {
               return (
                 <a
                   key={idx}
