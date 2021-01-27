@@ -560,7 +560,7 @@ img {
 
 .important {
   animation-name: scale;
-  animation-duration: 1s;
+  animation-duration: 0.75s;
   transform: scale(1);
   display: inline-block;
 }
