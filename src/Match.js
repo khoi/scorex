@@ -78,7 +78,7 @@ class Match extends Component {
       event: null,
       window: null,
     };
-    this.fetchedWindowTimeStamp = new Set();
+    this.fetchedWindowTimeStamp = [];
   }
 
   fetchEvent() {
@@ -110,17 +110,12 @@ class Match extends Component {
     let roundedTimeStamp = getRoundedTimeStamp(date);
     let formattedTimeStamp = formatTimeStamp(roundedTimeStamp);
 
-    if (this.fetchedWindowTimeStamp.has(roundedTimeStamp)) {
-      return;
-    }
-
-    console.log(this.fetchedWindowTimeStamp);
     this.fetchLiveStatsWindow(this.state.gameId, formattedTimeStamp).then(
       (res) => {
         if (!res.esportsGameId) {
           return;
         }
-        this.fetchedWindowTimeStamp.add(roundedTimeStamp);
+        this.fetchedWindowTimeStamp.push(roundedTimeStamp);
         this.setState((prevState) => ({
           ...prevState,
           window: res,
@@ -137,13 +132,13 @@ class Match extends Component {
     }, 10000);
 
     this.fetchWindowId = setInterval(() => {
-      if (this.fetchedWindowTimeStamp.size == 0) {
+      if (this.fetchedWindowTimeStamp.length == 0) {
         this.fetchWindow(+new Date() - 30 * 1000); // initial fetch
         return;
       }
 
-      let nextTimeStamp = Array.from(this.fetchedWindowTimeStamp)[
-        this.fetchedWindowTimeStamp.size - 1
+      let nextTimeStamp = this.fetchedWindowTimeStamp[
+        this.fetchedWindowTimeStamp.length - 1
       ];
 
       this.fetchWindow(nextTimeStamp + 10 * 1000); // initial fetch
