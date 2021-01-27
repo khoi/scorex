@@ -164,7 +164,7 @@ class Match extends Component {
                       />
                     </div>
                   </div>
-                  <div className="separator">VS</div>
+                  <div className="separator">{this.state.event.match.teams[0].result.gameWins} - {this.state.event.match.teams[1].result.gameWins}</div>
                   <div className="team">
                     <div className="tricode">
                       {this.state.event.match.teams[1].name}
