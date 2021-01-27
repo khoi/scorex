@@ -159,7 +159,7 @@ class Match extends Component {
                     <div className="logo">
                       <img
                         alt=""
-                        src={this.state.event.match.teams[0].image}
+                        src={`https://images.weserv.nl/?url=${this.state.event.match.teams[0].image}`}
                         className="image"
                       />
                     </div>
@@ -172,7 +172,7 @@ class Match extends Component {
                     <div className="logo">
                       <img
                         alt=""
-                        src={this.state.event.match.teams[1].image}
+                        src={`https://images.weserv.nl/?url=${this.state.event.match.teams[1].image}`}
                         className="image"
                       />
                     </div>
