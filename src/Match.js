@@ -89,9 +89,10 @@ class Match extends Component {
 
       if (!this.state.gameId) {
         // no game id redirect to the most feasible game
+        let possibleGames = res.data.event.match.games.filter(g => g.state !== "unneeded");
         let g =
-          res.data.event.match.games.find((a) => a.state === "inProgress") ||
-          res.data.event.match.games[res.data.event.match.games.length - 1];
+            possibleGames.find((a) => a.state === "inProgress") ||
+            possibleGames[possibleGames.length - 1];
         window.location.href = `/match/${this.state.eventId}/${g.id}`;
         return;
       }
