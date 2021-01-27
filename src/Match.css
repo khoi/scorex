@@ -236,7 +236,6 @@ img {
   background-repeat: no-repeat;
 }
 
-
 .StatsTeamsSummary .dragons .dragon.cloud {
   background-image: url(./assets/cloud-dragon.svg);
 }
@@ -300,6 +299,7 @@ img {
 
 .StatsTeamsSummary .gold .totals .blue-team {
   flex: 1;
+  text-align: right;
 }
 
 .StatsTeamsSummary .gold .totals .title {
@@ -313,7 +313,7 @@ img {
 
 .StatsTeamsSummary .gold .totals .red-team {
   flex: 1;
-  text-align: right;
+  text-align: left;
 }
 
 .StatsTeamsSummary .details {
@@ -349,7 +349,6 @@ img {
   height: 48px;
 }
 
-
 .StatsTeamsPlayers {
   position: relative;
   background-color: #0a0e13;
@@ -366,7 +365,7 @@ img {
 }
 
 .StatsTeamsPlayers .player.dead .wrapper {
-  filter: grayscale(100%)
+  filter: grayscale(100%);
 }
 
 .StatsTeamsPlayers .icon {
