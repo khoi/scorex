@@ -31,18 +31,17 @@ function getLastFrame(window) {
 
 function getBlueTeamGoldPercentage(window) {
   return (
-    getLastFrame(window).blueTeam.totalGold /
-    (getLastFrame(window).blueTeam.totalGold +
-      getLastFrame(window).redTeam.totalGold)
+    (Math.abs(
+      getLastFrame(window).blueTeam.totalGold -
+        getLastFrame(window).redTeam.totalGold
+    ) +
+      5000) /
+    10000
   );
 }
 
 function getRedTeamGoldPercentage(window) {
-  return (
-    getLastFrame(window).redTeam.totalGold /
-    (getLastFrame(window).blueTeam.totalGold +
-      getLastFrame(window).redTeam.totalGold)
-  );
+  return 1 - getBlueTeamGoldPercentage(window);
 }
 
 function getBluePlayers(window) {
