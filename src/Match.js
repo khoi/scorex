@@ -131,6 +131,8 @@ class Match extends Component {
         return;
       }
 
+      document.title = `${res.data.event.match.teams[0].name} - ${res.data.event.match.teams[1].name}`;
+
       this.setState((prevState) => ({
         ...prevState,
         event: res.data.event,
