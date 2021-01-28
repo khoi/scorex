@@ -31,10 +31,8 @@ function getLastFrame(window) {
 
 function getBlueTeamGoldPercentage(window) {
   return (
-    (Math.abs(
-      getLastFrame(window).blueTeam.totalGold -
-        getLastFrame(window).redTeam.totalGold
-    ) +
+    (getLastFrame(window).blueTeam.totalGold -
+      getLastFrame(window).redTeam.totalGold +
       5000) /
     10000
   );
