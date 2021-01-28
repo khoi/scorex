@@ -244,7 +244,8 @@ class Match extends Component {
                   </div>
                   <div className="team">
                     <div className="tricode">
-                      {this.state.event.match.teams[1].name}
+                      {this.state.event.match.teams[1].name} (
+                      {this.state.event.league.name})
                     </div>
                     <div className="logo">
                       <img
