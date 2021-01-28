@@ -150,12 +150,21 @@ class Match extends Component {
           return;
         }
         this.fetchedWindowTimeStamp.push(roundedTimeStamp);
+
+        this.setFavico(res);
+
         this.setState((prevState) => ({
           ...prevState,
           window: res,
         }));
       }
     );
+  }
+
+  setFavico(window) {
+    let gameState = getLastFrame(window).gameState;
+    document.getElementById("favicon").href =
+      gameState === "in_game" ? "favicon.ico" : "";
   }
 
   componentDidMount() {
