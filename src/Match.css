@@ -222,6 +222,7 @@ img {
 }
 
 .StatsTeamsSummary .dragons .blue-team {
+  text-align: right;
   flex: 1;
 }
 
@@ -257,7 +258,7 @@ img {
 }
 
 .StatsTeamsSummary .dragons .title {
-  flex: 1;
+  flex: 0;
   text-align: center;
   color: #8fa3b0;
   font-size: 1.4rem;
@@ -266,7 +267,6 @@ img {
 }
 
 .StatsTeamsSummary .dragons .red-team {
-  text-align: right;
   flex: 1;
 }
 
