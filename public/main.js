@@ -25,7 +25,7 @@ function getAllTournament() {
               '<div class="content">' +
               '<h3><a href="https://practical-edison-6e181b.netlify.app/match/' +
               events[i].match.id +
-              '" target="_blank">' +
+              '" >' +
               events[i].match.teams[0].name +
               "</a></h3>" +
               '<ul class="watch-list"><li>' +
@@ -56,7 +56,7 @@ function getAllTournament() {
               '<div class="content">' +
               '<h3><a href="https://practical-edison-6e181b.netlify.app/match/' +
               events[i].match.id +
-              '" target="_blank">' +
+              '" >' +
               events[i].match.teams[1].name +
               "</a></h3>" +
               '<ul class="watch-list"> <li>BO ' +
@@ -97,7 +97,7 @@ function GetFinishMatch() {
           '<div class="content">' +
           '<h3><a href="https://practical-edison-6e181b.netlify.app/match/' +
           events[i].match.id +
-          '" target="_blank">' +
+          '" >' +
           events[i].match.teams[0].name +
           "</a></h3>" +
           '<ul class="watch-list"><li>' +
@@ -128,7 +128,7 @@ function GetFinishMatch() {
           '<div class="content">' +
           '<h3><a href="https://practical-edison-6e181b.netlify.app/match/' +
           events[i].match.id +
-          '" target="_blank">' +
+          '" >' +
           events[i].match.teams[1].name +
           "</a></h3>" +
           '<ul class="watch-list"> <li>BO ' +
@@ -170,7 +170,7 @@ function GetLiveMatch() {
             '<div class="content">' +
             '<h3><a href="https://practical-edison-6e181b.netlify.app/match/' +
             events[i].match.id +
-            '" target="_blank">' +
+            '" >' +
             events[i].match.teams[0].name +
             "</a></h3>" +
             '<ul class="watch-list"><li>' +
@@ -201,7 +201,7 @@ function GetLiveMatch() {
             '<div class="content">' +
             '<h3><a href="https://practical-edison-6e181b.netlify.app/match/' +
             events[i].match.id +
-            '" target="_blank">' +
+            '" >' +
             events[i].match.teams[1].name +
             "</a></h3>" +
             '<ul class="watch-list"> <li>BO ' +
