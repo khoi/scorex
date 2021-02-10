@@ -107,6 +107,16 @@ function isRedFB(window) {
   return redFirstBloodFrameIdx(window) > blueFirstBloodFrameIdx(window);
 }
 
+function oddCSSColor(percentage) {
+  if (percentage <= 40) {
+    return "red";
+  }
+  if (percentage >= 60) {
+    return "green";
+  }
+  return "";
+}
+
 function calculateBlueWinningOdd(window) {
   const lastFrame = getLastFrame(window);
   const goldDiff = lastFrame.blueTeam.totalGold - lastFrame.redTeam.totalGold;
@@ -355,7 +365,14 @@ class Match extends Component {
                     }
                   )}
                 </div>
-                <div className="title">
+                <div
+                  className="title"
+                  style={{
+                    color: oddCSSColor(
+                      calculateBlueWinningOdd(this.state.window)
+                    ),
+                  }}
+                >
                   {calculateBlueWinningOdd(this.state.window)}
                 </div>
                 <div className="red-team">
