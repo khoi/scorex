@@ -35,7 +35,7 @@ function oddCalculator(
     cloudDiff * spring2021OddCoffData.cloudDiff;
 
   const odds = 2.71828182845904523536 ** logOdds;
-  const winProbability = ((odds / (1 + odds)) * 100).toFixed(1);
+  const winProbability = ((odds / (1 + odds))).toFixed(1);
   return winProbability;
 }
 
@@ -147,6 +147,30 @@ const Animatable = ({ value }) => (
     {value}
   </span>
 );
+
+const WinningPercentage = ({blueTeamWinningProbability}) => {
+  const bwp  = blueTeamWinningProbability < 0.000001 ? 0 : blueTeamWinningProbability;
+  const rwp = 1 - bwp;
+  const blueTeamWinningPercentage = (bwp * 100.0).toFixed(2) + "%";
+  const blueTeamRate = bwp === 0 ? 0 : (1.0 / bwp).toFixed(2);
+  const redTeamWinningPercentage = (rwp * 100.0).toFixed(2) + "%";
+  const redTeamRate = rwp === 0 ? 0 : (1.0 / rwp).toFixed(2)
+
+  return (
+    <div className="winning-percentage">
+      <div className="team">
+        <span class="rate">{blueTeamRate}</span>
+        <span class="percentage">{blueTeamWinningPercentage}</span>
+      </div>
+      <span> - </span>
+      <div className="team">
+        <span class="rate">{redTeamRate}</span>
+        <span class="percentage">{redTeamWinningPercentage}</span>
+      </div>
+    </div>
+  )
+};
+
 class Match extends Component {
   async getEventDetails(id) {
     let res = await fetch(
@@ -355,6 +379,7 @@ class Match extends Component {
         <>
           <div className="StatsTeams">
             <div className="StatsTeamsSummary">
+              <WinningPercentage blueTeamWinningProbability={calculateBlueWinningOdd(this.state.window)} />
               <div className="dragons">
                 <div className="blue-team">
                   {getLastFrame(this.state.window).blueTeam.dragons.map(
@@ -364,16 +389,6 @@ class Match extends Component {
                       );
                     }
                   )}
-                </div>
-                <div
-                  className="title"
-                  style={{
-                    color: oddCSSColor(
-                      calculateBlueWinningOdd(this.state.window)
-                    ),
-                  }}
-                >
-                  {calculateBlueWinningOdd(this.state.window)}
                 </div>
                 <div className="red-team">
                   {getLastFrame(this.state.window).redTeam.dragons.map(

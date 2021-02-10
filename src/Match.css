@@ -568,6 +568,37 @@ img {
   display: inline-block;
 }
 
+.winning-percentage {
+  display: flex;
+  justify-content: center; 
+  border-bottom: 1px solid #252c32;
+  margin: 0 0 8px 0;
+}
+
+.winning-percentage .team {
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  flex: 1;
+}
+
+.winning-percentage .team:first-child {
+  flex-direction: row-reverse;
+}
+
+.percentage, .rate {
+  padding: 0 20px;
+}
+
+.percentage {
+  color: green;
+}
+
+.rate {
+  color: yellow;
+}
+
 @keyframes scale {
   0% {
     transform: scale(1);
