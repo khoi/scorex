@@ -6,6 +6,39 @@ import towerIcon from "./assets/tower.svg";
 import killIcon from "./assets/kill.svg";
 import Player from "./Player";
 
+const spring2021OddCoffData = {
+  split: "Spring2021",
+  gameCount: 567,
+  updatedAt: "2021-02-08T13:02:29.000Z",
+  goldDiff: 0.000609096,
+  infernalDiff: 0.608948,
+  mountainDiff: 0.369339,
+  oceanDiff: 0.0748532,
+  cloudDiff: 0.0932673,
+  side: -0.0568309,
+};
+
+function oddCalculator(
+  side, // -1: blue, 0: any, 1: red
+  goldDiff,
+  infernalDiff,
+  mountainDiff,
+  oceanDiff,
+  cloudDiff
+) {
+  const logOdds =
+    side * spring2021OddCoffData.side +
+    goldDiff * spring2021OddCoffData.goldDiff +
+    infernalDiff * spring2021OddCoffData.infernalDiff +
+    mountainDiff * spring2021OddCoffData.mountainDiff +
+    oceanDiff * spring2021OddCoffData.oceanDiff +
+    cloudDiff * spring2021OddCoffData.cloudDiff;
+
+  const odds = 2.71828182845904523536 ** logOdds;
+  const winProbability = ((odds / (1 + odds)) * 100).toFixed(1);
+  return winProbability;
+}
+
 function findLastIndex(array, fn) {
   if (!array) return -1;
   // eslint-disable-next-line
@@ -72,6 +105,31 @@ function isBlueFB(window) {
 
 function isRedFB(window) {
   return redFirstBloodFrameIdx(window) > blueFirstBloodFrameIdx(window);
+}
+
+function calculateBlueWinningOdd(window) {
+  const lastFrame = getLastFrame(window);
+  const goldDiff = lastFrame.blueTeam.totalGold - lastFrame.redTeam.totalGold;
+  const infernalDiff =
+    lastFrame.blueTeam.dragons.filter((d) => d === "infernal").length -
+    lastFrame.redTeam.dragons.filter((d) => d === "infernal").length;
+  const mountainDiff =
+    lastFrame.blueTeam.dragons.filter((d) => d === "mountain").length -
+    lastFrame.redTeam.dragons.filter((d) => d === "mountain").length;
+  const oceanDiff =
+    lastFrame.blueTeam.dragons.filter((d) => d === "ocean").length -
+    lastFrame.redTeam.dragons.filter((d) => d === "ocean").length;
+  const cloudDiff =
+    lastFrame.blueTeam.dragons.filter((d) => d === "cloud").length -
+    lastFrame.redTeam.dragons.filter((d) => d === "cloud").length;
+  return oddCalculator(
+    -1,
+    goldDiff,
+    infernalDiff,
+    mountainDiff,
+    oceanDiff,
+    cloudDiff
+  );
 }
 
 const Animatable = ({ value }) => (
@@ -297,7 +355,9 @@ class Match extends Component {
                     }
                   )}
                 </div>
-                <div className="title">DRAGONS</div>
+                <div className="title">
+                  {calculateBlueWinningOdd(this.state.window)}
+                </div>
                 <div className="red-team">
                   {getLastFrame(this.state.window).redTeam.dragons.map(
                     (d, i) => {
