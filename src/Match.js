@@ -35,7 +35,7 @@ function oddCalculator(
     cloudDiff * spring2021OddCoffData.cloudDiff;
 
   const odds = 2.71828182845904523536 ** logOdds;
-  const winProbability = ((odds / (1 + odds))).toFixed(1);
+  const winProbability = ((odds / (1 + odds))).toFixed(3);
   return winProbability;
 }
 
@@ -151,10 +151,10 @@ const Animatable = ({ value }) => (
 const WinningPercentage = ({blueTeamWinningProbability}) => {
   const bwp  = blueTeamWinningProbability < 0.000001 ? 0 : blueTeamWinningProbability;
   const rwp = 1 - bwp;
-  const blueTeamWinningPercentage = (bwp * 100.0).toFixed(2) + "%";
-  const blueTeamRate = bwp === 0 ? 0 : (1.0 / bwp).toFixed(2);
-  const redTeamWinningPercentage = (rwp * 100.0).toFixed(2) + "%";
-  const redTeamRate = rwp === 0 ? 0 : (1.0 / rwp).toFixed(2)
+  const blueTeamWinningPercentage = (bwp * 100.0).toFixed(3) + "%";
+  const blueTeamRate = bwp === 0 ? 0 : (1.0 / bwp).toFixed(3);
+  const redTeamWinningPercentage = (rwp * 100.0).toFixed(3) + "%";
+  const redTeamRate = rwp === 0 ? 0 : (1.0 / rwp).toFixed(3)
 
   return (
     <div className="winning-percentage">
