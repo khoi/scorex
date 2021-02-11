@@ -19,7 +19,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "_encrypt": "npx staticrypt -f password_template.html build/index.html qepoivfjqpfkjvqwpojpwqj -o build/index.html"
+    "_encrypt": "npx staticrypt -f password_template.html build/index.html qwefijwqfeoijqwfojasojvosajdc -o build/index.html"
   },
   "eslintConfig": {
     "extends": [
