@@ -5,6 +5,7 @@ import baronIcon from "./assets/baron.svg";
 import towerIcon from "./assets/tower.svg";
 import killIcon from "./assets/kill.svg";
 import Player from "./Player";
+import moment from "moment";
 
 function findLastIndex(array, fn) {
   if (!array) return -1;
@@ -297,7 +298,11 @@ class Match extends Component {
                     }
                   )}
                 </div>
-                <div className="title">DRAGONS</div>
+                <div className="title">
+                  {moment(
+                    getLastFrame(this.state.window).rfc460Timestamp
+                  ).format("HH:mm:ss")}
+                </div>
                 <div className="red-team">
                   {getLastFrame(this.state.window).redTeam.dragons.map(
                     (d, i) => {
