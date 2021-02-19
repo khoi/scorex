@@ -13,6 +13,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "request-to-curl": "^0.1.6",
+    "use-sound": "^2.0.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
@@ -20,7 +21,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "_encrypt": "npx staticrypt -f password_template.html build/index.html qwefijwqfeoijqwfojasojvosajdc -o build/index.html"
+    "_encrypt": "npx staticrypt -f password_template.html build/index.html ihefihqwoghfqwiuhfiuh84h8hg -o build/index.html"
   },
   "eslintConfig": {
     "extends": [
