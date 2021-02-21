@@ -12,6 +12,7 @@ const towerSound = new Audio("/sounds/tower.wav");
 const inhiSound = new Audio("/sounds/inhi.wav");
 const baronSound = new Audio("/sounds/baron.wav");
 const dragonSound = new Audio("/sounds/dragon.mp3");
+const readySound = new Audio("/sounds/ready.wav");
 
 function findLastIndex(array, fn) {
   if (!array) return -1;
@@ -114,6 +115,7 @@ class Match extends Component {
       gameId: this.props.match.params.gameId,
       event: null,
       window: null,
+      ready: false,
     };
     this.fetchedWindowTimeStamp = [];
   }
@@ -158,6 +160,7 @@ class Match extends Component {
         this.setState((prevState) => ({
           ...prevState,
           window: res,
+          ready: true,
         }));
       }
     );
@@ -259,6 +262,10 @@ class Match extends Component {
       ) {
         dragonSound.play();
       }
+    }
+
+    if (this.state.ready) {
+      readySound.play();
     }
 
     let header = this.state.event ? (
