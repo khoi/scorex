@@ -233,29 +233,29 @@ class Match extends Component {
         0
       );
 
-      if (beforeRedKills > redKills || beforeBlueKills > blueKills) {
+      if (beforeRedKills < redKills || beforeBlueKills < blueKills) {
         killSound.play();
       }
 
-      if (beforeRedTowers > redTowers || beforeBlueTowers > blueTowers) {
+      if (beforeRedTowers < redTowers || beforeBlueTowers < blueTowers) {
         towerSound.play();
       }
 
       if (
-        beforeRedInhibitors > redInhibitors ||
-        beforeBlueInhibitors > blueInhibitors
+        beforeRedInhibitors < redInhibitors ||
+        beforeBlueInhibitors < blueInhibitors
       ) {
         inhiSound.play();
       }
 
-      if (beforeRedBarons > redBarons || beforeBlueBarons > blueBarons) {
+      if (beforeRedBarons < redBarons || beforeBlueBarons < blueBarons) {
         baronSound.play();
       }
 
       if (
-        aFrameBefore.blueTeam.dragons.length >
+        aFrameBefore.blueTeam.dragons.length <
           lastFrame.blueTeam.dragons.length ||
-        aFrameBefore.redTeam.dragons.length > lastFrame.redTeam.dragons.length
+        aFrameBefore.redTeam.dragons.length < lastFrame.redTeam.dragons.length
       ) {
         dragonSound.play();
       }
