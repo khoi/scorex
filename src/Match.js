@@ -496,7 +496,9 @@ class Match extends Component {
           </div>
         </>
       ) : (
-        <div>Loading</div>
+        <div id="match_loading" style={{ "font-size": "40px" }}>
+          LOADING CLICK ANYWHERE TO ENABLE SOUND
+        </div>
       );
 
     return (
