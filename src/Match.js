@@ -116,6 +116,11 @@ class Match extends Component {
       window: null,
     };
     this.fetchedWindowTimeStamp = [];
+    this.prevTotalKills = 0;
+    this.prevTotalTowers = 0;
+    this.prevTotalBarons = 0;
+    this.prevTotalInhis = 0;
+    this.prevTotalDragons = 0;
   }
 
   fetchEvent() {
@@ -155,6 +160,7 @@ class Match extends Component {
           return;
         }
         this.fetchedWindowTimeStamp.push(roundedTimeStamp);
+
         this.setState((prevState) => ({
           ...prevState,
           window: res,
@@ -212,52 +218,34 @@ class Match extends Component {
         )
       : 0;
 
-    if (this.state.window && this.state.window.frames.length > 2) {
-      const aFrameBefore = this.state.window.frames[
-        this.state.window.frames.length - 2
-      ];
-
-      const beforeBlueInhibitors = aFrameBefore.blueTeam.inhibitors;
-      const beforeBlueBarons = aFrameBefore.blueTeam.barons;
-      const beforeBlueTowers = aFrameBefore.blueTeam.towers;
-      const beforeBlueKills = getBluePlayersStatsForFrame(aFrameBefore).reduce(
-        (acc, val) => acc + val.kills,
-        0
-      );
-
-      const beforeRedInhibitors = aFrameBefore.redTeam.inhibitors;
-      const beforeRedBarons = aFrameBefore.redTeam.barons;
-      const beforeRedTowers = aFrameBefore.redTeam.towers;
-      const beforeRedKills = getRedPlayersStatsForFrame(aFrameBefore).reduce(
-        (acc, val) => acc + val.kills,
-        0
-      );
-
-      if (beforeRedKills < redKills || beforeBlueKills < blueKills) {
+    if (lastFrame) {
+      if (this.prevTotalKills < redKills + blueKills) {
         killSound.play();
+        this.prevTotalKills = redKills + blueKills;
       }
 
-      if (beforeRedTowers < redTowers || beforeBlueTowers < blueTowers) {
+      if (this.prevTotalTowers < redTowers + blueTowers) {
         towerSound.play();
+        this.prevTotalTowers = redTowers + blueTowers;
       }
 
-      if (
-        beforeRedInhibitors < redInhibitors ||
-        beforeBlueInhibitors < blueInhibitors
-      ) {
+      if (this.prevTotalInhis < redInhibitors + blueInhibitors) {
         inhiSound.play();
+        this.prevTotalInhis = redInhibitors + blueInhibitors;
       }
 
-      if (beforeRedBarons < redBarons || beforeBlueBarons < blueBarons) {
+      if (this.prevTotalBarons < redBarons + blueBarons) {
         baronSound.play();
+        this.prevTotalBarons = redBarons + blueBarons;
       }
 
       if (
-        aFrameBefore.blueTeam.dragons.length <
-          lastFrame.blueTeam.dragons.length ||
-        aFrameBefore.redTeam.dragons.length < lastFrame.redTeam.dragons.length
+        this.prevTotalDragons <
+        lastFrame.blueTeam.dragons.length + lastFrame.redTeam.dragons.length
       ) {
         dragonSound.play();
+        this.prevTotalDragons =
+          lastFrame.blueTeam.dragons.length + lastFrame.redTeam.dragons.length;
       }
     }
 
@@ -496,7 +484,7 @@ class Match extends Component {
           </div>
         </>
       ) : (
-        <div id="match_loading" style={{ "font-size": "40px" }}>
+        <div id="match_loading" style={{ fontSize: "40px" }}>
           LOADING CLICK ANYWHERE TO ENABLE SOUND
         </div>
       );
