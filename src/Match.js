@@ -220,9 +220,7 @@ class Match extends Component {
 
     if (lastFrame) {
       if (this.prevTotalKills < redKills + blueKills) {
-        for (let i = 0; i < redKills + blueKills - this.prevTotalKills; ++i) {
-          killSound.play();
-        }
+        killSound.play();
         this.prevTotalKills = redKills + blueKills;
       }
 
