@@ -23,7 +23,7 @@ function getAllTournament() {
               events[i].match.teams[0].image +
               '" alt="image">' +
               '<div class="content">' +
-              '<h3><a href="https://practical-edison-6e181b.netlify.app/match/' +
+              '<h3><a href="https://scorex.netlify.app/match/' +
               events[i].match.id +
               '" >' +
               events[i].match.teams[0].name +
@@ -54,7 +54,7 @@ function getAllTournament() {
               events[i].match.teams[1].image +
               '" alt="image">' +
               '<div class="content">' +
-              '<h3><a href="https://practical-edison-6e181b.netlify.app/match/' +
+              '<h3><a href="https://scorex.netlify.app/match/' +
               events[i].match.id +
               '" >' +
               events[i].match.teams[1].name +
@@ -95,7 +95,7 @@ function GetFinishMatch() {
           events[i].match.teams[0].image +
           '" alt="image">' +
           '<div class="content">' +
-          '<h3><a href="https://practical-edison-6e181b.netlify.app/match/' +
+          '<h3><a href="https://scorex.netlify.app/match/' +
           events[i].match.id +
           '" >' +
           events[i].match.teams[0].name +
@@ -126,7 +126,7 @@ function GetFinishMatch() {
           events[i].match.teams[1].image +
           '" alt="image">' +
           '<div class="content">' +
-          '<h3><a href="https://practical-edison-6e181b.netlify.app/match/' +
+          '<h3><a href="https://scorex.netlify.app/match/' +
           events[i].match.id +
           '" >' +
           events[i].match.teams[1].name +
@@ -168,7 +168,7 @@ function GetLiveMatch() {
             events[i].match.teams[0].image +
             '" alt="image">' +
             '<div class="content">' +
-            '<h3><a href="https://practical-edison-6e181b.netlify.app/match/' +
+            '<h3><a href="https://scorex.netlify.app/match/' +
             events[i].match.id +
             '" >' +
             events[i].match.teams[0].name +
@@ -199,7 +199,7 @@ function GetLiveMatch() {
             events[i].match.teams[1].image +
             '" alt="image">' +
             '<div class="content">' +
-            '<h3><a href="https://practical-edison-6e181b.netlify.app/match/' +
+            '<h3><a href="https://scorex.netlify.app/match/' +
             events[i].match.id +
             '" >' +
             events[i].match.teams[1].name +
