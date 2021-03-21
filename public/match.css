@@ -1,0 +1,93 @@
+body {
+    font-family: "Roboto";
+}
+.icon {
+   
+    height: 40px;
+    width: 40px;
+    vertical-align: middle;
+}
+
+.live-match {
+    text-align: center;
+    color: red;
+}
+
+.live-match h2 {
+    margin: 10px 0px;
+}
+
+.left-team {
+    text-align: left;
+    width: 45%;
+    display: inline-block;
+    
+}
+
+.right-team {
+    text-align: right;
+    width: 45%;
+    display: inline-block;
+    
+}
+
+.item-type {
+    display: inline-block;
+    width: 47%;
+    text-align: left;
+    font-size: 12px;
+}
+
+.item-league {
+    display: inline-block;
+    width: 47%;
+    text-align: right;
+    font-size: 12px;
+}
+
+.live-match .live-match-container {
+    color: white;
+    background-color: #18323e;
+    border-top:  1px solid black;
+}
+
+ .live-match-container-item {
+    border-bottom: 1px solid black;   
+    font-weight: bold;
+    cursor: pointer;
+}
+
+ .live-match-container-item:hover {
+    background-color: #561919;
+}
+
+ .live-match-container-item span {
+    padding: 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/**/
+
+.container {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.container .btn-upcoming {
+    width: 49%;
+    padding: 10px 0px;
+    display: inline-block;
+    background-color: #ab1313;
+    cursor: pointer;
+    color: white;
+}
+.container .btn-result {
+    width: 49%;
+    padding: 10px 0px;
+    display: inline-block;
+    background-color: #1f1e1e;
+    cursor: pointer;
+    color: white;
+}

@@ -1,8 +1,41 @@
+var listLeagues = [];
+getLeagues();
+
+function getLeagues() {
+  $.ajax({
+    url:
+      "https://esports-api.lolesports.com/persisted/gw/getLeagues?hl=en-US",
+  
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader(
+        "x-api-key",
+        "0TvQnueqKa5mxJntVWt0w4LpLfEkrV1Ta8rQBb9Z"
+      );
+    },
+    success: function (data) {
+      if (data) {
+        for(var i = 0; i < data.data.leagues.length; i ++) {
+          listLeagues.push(data.data.leagues[i].id);
+        }
+       //start
+        setInterval(function () {
+          getAllTournament();
+          GetLiveMatch();
+          GetFinishMatch();
+        }, 6000);
+      }
+    },
+    error: function () {
+      console.log("Error");
+    },
+  });  
+}
+
 function getAllTournament() {
   $.ajax({
     url:
-      "https://esports-api.lolesports.com/persisted/gw/getSchedule?hl=en-US&leagueId=100695891328981122,101097443346691685,101382741235120470,104366947889790212,105266074488398661,105266088231437431,105266091639104326,105266094998946936,105266098308571975,105266101075764040,105266103462388553,105266106309666619,105266108767593290,105266111679554379,105266114583847756,105266116681590588,105266118689416013,105549980953490846,105709090213554609,98767975604431411,98767991295297326,98767991299243165,98767991302996019,98767991310872058,98767991314006698,98767991325878492,98767991331560952,98767991332355509,98767991335774713,98767991343597634,98767991349978712,98767991355908944,99332500638116286",
-
+      "https://esports-api.lolesports.com/persisted/gw/getSchedule?hl=en-US",
+    data: {leagueId: listLeagues.toString()},
     beforeSend: function (xhr) {
       xhr.setRequestHeader(
         "x-api-key",
@@ -18,28 +51,16 @@ function getAllTournament() {
             var a = new Date(events[i].startTime).toString().split(" ");
             upcomingmatch =
               upcomingmatch +
-              '<div class="single-matches-box"> <div class="row align-items-center"><div class="col-lg-5 col-md-12"> <div class="matches-team">' +
-              '<img  src="' +
-              events[i].match.teams[0].image +
-              '" alt="image">' +
-              '<div class="content">' +
-              '<h3><a href="https://scorex.netlify.app/match/' +
-              events[i].match.id +
-              '" >' +
-              events[i].match.teams[0].name +
-              "</a></h3>" +
-              '<ul class="watch-list"><li>' +
-              events[i].league.name +
-              " " +
-              events[i].blockName +
-              "</li> </ul> </div></div></div>" +
-              '<div class="col-lg-2 col-md-12"><div class="matches-result"><ul>' +
-              "<li>" +
-              events[i].match.teams[0].result.gameWins +
-              "</li><li>" +
-              events[i].match.teams[1].result.gameWins +
-              "</li>" +
-              '</ul><span class="date-time">' +
+
+              '<div class="live-match-container-item" onclick="window.open(\'https://scorex.netlify.app/match/' + events[i].match.id + '\')">' +
+              '<div class="left-team">' +
+              '<img class="icon" src="' + events[i].match.teams[0].image + '"/> ' +
+              '<span>'+ events[i].match.teams[0].name +'</span></div>' +
+              '<span style="color: red;">VS</span>' +
+              '<div class="right-team">' +
+              '<span>' + events[i].match.teams[1].name + '</span>' + 
+              '<img class="icon" src="' + events[i].match.teams[1].image +'" /> </div>' +
+              '<div class="item-time" style="font-size: 12px; color: seagreen; margin-bottom: 5px;">' +
               a[0] +
               " " +
               a[1] +
@@ -49,23 +70,11 @@ function getAllTournament() {
               a[3] +
               " " +
               a[4] +
-              '</span> </div> </div> <div class="col-lg-5 col-md-12"><div class="matches-team right-image">' +
-              '<img  src="' +
-              events[i].match.teams[1].image +
-              '" alt="image">' +
-              '<div class="content">' +
-              '<h3><a href="https://scorex.netlify.app/match/' +
-              events[i].match.id +
-              '" >' +
-              events[i].match.teams[1].name +
-              "</a></h3>" +
-              '<ul class="watch-list"> <li>BO ' +
-              events[i].match.strategy.count +
-              "</li></ul></div></div></div> </div></div>";
+              '</div><div class="item-type">BO'+ events[i].match.strategy.count + '</div><div class="item-league">' + events[i].league.name + '</div></div>';
           }
         }
 
-        $("#upcoming-matches").html(upcomingmatch);
+        $(".upcoming-match").html(upcomingmatch);
       }
     },
     error: function () {
@@ -90,28 +99,15 @@ function GetFinishMatch() {
       for (var i = 0; i < events.length; i++) {
         var a = new Date(events[i].startTime).toString().split(" ");
         fmStr =
-          '<div class="single-matches-box"> <div class="row align-items-center"><div class="col-lg-5 col-md-12"> <div class="matches-team">' +
-          '<img  src="' +
-          events[i].match.teams[0].image +
-          '" alt="image">' +
-          '<div class="content">' +
-          '<h3><a href="https://scorex.netlify.app/match/' +
-          events[i].match.id +
-          '" >' +
-          events[i].match.teams[0].name +
-          "</a></h3>" +
-          '<ul class="watch-list"><li>' +
-          events[i].league.name +
-          " " +
-          events[i].blockName +
-          "</li> </ul> </div></div></div>" +
-          '<div class="col-lg-2 col-md-12"><div class="matches-result"><ul>' +
-          "<li>" +
-          events[i].match.teams[0].result.gameWins +
-          "</li><li>" +
-          events[i].match.teams[1].result.gameWins +
-          "</li>" +
-          '</ul><span class="date-time">' +
+          '<div class="live-match-container-item" onclick="window.open(\'https://scorex.netlify.app/match/' + events[i].match.id + '\')">' +
+          '<div class="left-team">' +
+          '<img class="icon" src="' + events[i].match.teams[0].image + '" /> ' +
+          '<span>'+ events[i].match.teams[0].name +'</span></div>' +
+          '<span style="color: red; font-size: 15px;">'+ events[i].match.teams[0].result.gameWins + ':' + events[i].match.teams[1].result.gameWins +'</span>' +
+          '<div class="right-team">' +
+          '<span>' + events[i].match.teams[1].name + '</span>' + 
+          '<img class="icon" src="' + events[i].match.teams[1].image +'" /></div>' +
+          '<div class="item-time" style="font-size: 12px; color: seagreen; margin-bottom: 5px;">' +
           a[0] +
           " " +
           a[1] +
@@ -121,23 +117,10 @@ function GetFinishMatch() {
           a[3] +
           " " +
           a[4] +
-          '</span> </div> </div> <div class="col-lg-5 col-md-12"><div class="matches-team right-image">' +
-          '<img  src="' +
-          events[i].match.teams[1].image +
-          '" alt="image">' +
-          '<div class="content">' +
-          '<h3><a href="https://scorex.netlify.app/match/' +
-          events[i].match.id +
-          '" >' +
-          events[i].match.teams[1].name +
-          "</a></h3>" +
-          '<ul class="watch-list"> <li>BO ' +
-          events[i].match.strategy.count +
-          "</li></ul></div></div></div> </div></div>" +
-          fmStr;
+          '</div><div class="item-type">BO'+ events[i].match.strategy.count + '</div><div class="item-league">' + events[i].league.name + '</div></div>' + fmStr;
       }
 
-      $("#finish-matches").html(fmStr);
+      $(".latest-result").html(fmStr);
     },
     error: function () {
       console.log("error");
@@ -161,68 +144,36 @@ function GetLiveMatch() {
       for (var i = 0; i < events.length; i++) {
         if (events[i].match) {
           var a = new Date(events[i].startTime).toString().split(" ");
-          fmStr =
-            fmStr +
-            '<div class="single-matches-box"> <div class="row align-items-center"><div class="col-lg-5 col-md-12"> <div class="matches-team">' +
-            '<img  src="' +
-            events[i].match.teams[0].image +
-            '" alt="image">' +
-            '<div class="content">' +
-            '<h3><a href="https://scorex.netlify.app/match/' +
-            events[i].match.id +
-            '" >' +
-            events[i].match.teams[0].name +
-            "</a></h3>" +
-            '<ul class="watch-list"><li>' +
-            events[i].league.name +
-            " " +
-            events[i].blockName +
-            "</li> </ul> </div></div></div>" +
-            '<div class="col-lg-2 col-md-12"><div class="matches-result"><ul>' +
-            "<li>" +
-            events[i].match.teams[0].result.gameWins +
-            "</li><li>" +
-            events[i].match.teams[1].result.gameWins +
-            "</li>" +
-            '</ul><span class="date-time">' +
-            a[0] +
-            " " +
-            a[1] +
-            " " +
-            a[2] +
-            " " +
-            a[3] +
-            " " +
-            a[4] +
-            '</span> </div> </div> <div class="col-lg-5 col-md-12"><div class="matches-team right-image">' +
-            '<img  src="' +
-            events[i].match.teams[1].image +
-            '" alt="image">' +
-            '<div class="content">' +
-            '<h3><a href="https://scorex.netlify.app/match/' +
-            events[i].match.id +
-            '" >' +
-            events[i].match.teams[1].name +
-            "</a></h3>" +
-            '<ul class="watch-list"> <li>BO ' +
-            events[i].match.strategy.count +
-            "</li></ul></div></div></div> </div></div>";
+          fmStr = fmStr +    
+          '<div class="live-match-container-item" onclick="window.open(\'https://scorex.netlify.app/match/' + events[i].match.id + '\')">' +
+          '<div class="left-team">' +
+          '<img class="icon" src="' +  events[i].match.teams[0].image + '" /> ' +
+          '<span>'+ events[i].match.teams[0].name +'</span></div>' +
+          '<span style="color: red; font-size: 15px;">'+ events[i].match.teams[0].result.gameWins + ':' + events[i].match.teams[1].result.gameWins +'</span>' +
+          '<div class="right-team">' +
+          '<span>' + events[i].match.teams[1].name + '</span>' + 
+          '<img class="icon" src="' + events[i].match.teams[1].image +'" /></div>' +
+          '<div class="item-time" style="font-size: 12px; color: seagreen; margin-bottom: 5px;">' +
+          a[0] +
+          " " +
+          a[1] +
+          " " +
+          a[2] +
+          " " +
+          a[3] +
+          " " +
+          a[4] +
+          '</div><div class="item-type">BO'+ events[i].match.strategy.count + '</div><div class="item-league">' + events[i].league.name + '</div></div>';
         }
       }
       console.log(fmStr);
-      $("#trending-match").html(fmStr);
+      $(".live-match-container").html(fmStr);
     },
     error: function () {
       console.log("error");
     },
   });
 }
-
-setInterval(function () {
-  getAllTournament();
-  GetLiveMatch();
-  GetFinishMatch();
-}, 6000);
 
 function signin() {
   var tk = $("#tk").val();
