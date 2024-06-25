@@ -116,11 +116,10 @@ function getLastBaronTimestamp(frames) {
   return null;
 }
 
-function getPlayAndPauseDuration(frames) {
+function getPlayDuration(frames) {
   let sortedFrameKeys = Object.keys(frames).sort();
 
   let playTime = 0;
-  let pauseTime = 0;
   zip(sortedFrameKeys.slice(0, -1), sortedFrameKeys.slice(1)).forEach(
     ([a, b]) => {
       let duration =
@@ -128,13 +127,7 @@ function getPlayAndPauseDuration(frames) {
         new Date(frames[a].rfc460Timestamp);
 
       if (
-        frames[b].gameState === "paused" ||
-        frames[a].gameState === "paused"
-      ) {
-        pauseTime += duration;
-      }
-      if (
-        frames[b].gameState === "in_game" ||
+        frames[b].gameState === "in_game" &&
         frames[a].gameState === "in_game"
       ) {
         playTime += duration;
@@ -142,7 +135,7 @@ function getPlayAndPauseDuration(frames) {
     }
   );
 
-  return { playTime, pauseTime };
+  return playTime;
 }
 
 const Animatable = ({ value }) => (
@@ -245,7 +238,7 @@ class Match extends Component {
       return "???";
     }
 
-    let { playTime, pauseTime } = getPlayAndPauseDuration(this.fetchedFrames);
+    let playTime = getPlayDuration(this.fetchedFrames);
     return moment.utc(playTime).format("HH:mm:ss");
   }
 
@@ -260,7 +253,7 @@ class Match extends Component {
     let framesAfterBaron = sortedFrameKeys
       .filter((k) => new Date(k) > lastBaronTimestamp)
       .map((k) => this.fetchedFrames[k]);
-    let { playTime, pauseTime } = getPlayAndPauseDuration(framesAfterBaron);
+    let playTime = getPlayDuration(framesAfterBaron);
     return moment.utc(playTime).format("HH:mm:ss");
   }
 
