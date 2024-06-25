@@ -104,7 +104,7 @@ function getPlayDurationString(frames) {
   let startTime = getStartTime(frames);
 
   if (!startTime) {
-    return "Unknown";
+    return "???";
   }
 
   let sortedFrameKeys = Object.keys(frames).sort();
