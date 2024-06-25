@@ -52,7 +52,7 @@ function getAllTournament() {
             upcomingmatch =
               upcomingmatch +
 
-              '<div class="live-match-container-item" onclick="window.open(\'https://scorex.netlify.app/match/' + events[i].match.id + '\')">' +
+              '<div class="live-match-container-item" onclick="window.open(\'https://scorex.pages.dev/match/' + events[i].match.id + '\')">' +
               '<div class="left-team">' +
               '<img class="icon" src="' + events[i].match.teams[0].image + '"/> ' +
               '<span>'+ events[i].match.teams[0].name +'</span></div>' +
@@ -99,7 +99,7 @@ function GetFinishMatch() {
       for (var i = 0; i < events.length; i++) {
         var a = new Date(events[i].startTime).toString().split(" ");
         fmStr =
-          '<div class="live-match-container-item" onclick="window.open(\'https://scorex.netlify.app/match/' + events[i].match.id + '\')">' +
+          '<div class="live-match-container-item" onclick="window.open(\'https://scorex.pages.dev/match/' + events[i].match.id + '\')">' +
           '<div class="left-team">' +
           '<img class="icon" src="' + events[i].match.teams[0].image + '" /> ' +
           '<span>'+ events[i].match.teams[0].name +'</span></div>' +
@@ -145,7 +145,7 @@ function GetLiveMatch() {
         if (events[i].match) {
           var a = new Date(events[i].startTime).toString().split(" ");
           fmStr = fmStr +    
-          '<div class="live-match-container-item" onclick="window.open(\'https://scorex.netlify.app/match/' + events[i].match.id + '\')">' +
+          '<div class="live-match-container-item" onclick="window.open(\'https://scorex.pages.dev/match/' + events[i].match.id + '\')">' +
           '<div class="left-team">' +
           '<img class="icon" src="' +  events[i].match.teams[0].image + '" /> ' +
           '<span>'+ events[i].match.teams[0].name +'</span></div>' +
