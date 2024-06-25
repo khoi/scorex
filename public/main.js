@@ -85,7 +85,7 @@ function getAllTournament() {
 
 function GetFinishMatch() {
   $.ajax({
-    url: "https://esports-api.lolesports.com/persisted/gw/getCompletedEvents",
+    url: "https://esports-api.lolesports.com/persisteddragon/gw/getCompletedEvents",
     data: { hl: "en-US" },
     beforeSend: function (xhr) {
       xhr.setRequestHeader(
