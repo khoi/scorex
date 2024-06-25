@@ -13,6 +13,8 @@ const inhiSound = new Audio("/sounds/inhi.wav");
 const baronSound = new Audio("/sounds/baron.wav");
 const dragonSound = new Audio("/sounds/dragon.wav");
 
+const zip = (a, b) => a.map((k, i) => [k, b[i]]);
+
 function findLastIndex(array, fn) {
   if (!array) return -1;
   // eslint-disable-next-line
@@ -82,6 +84,58 @@ function isRedFB(window) {
   return redFirstBloodFrameIdx(window) > blueFirstBloodFrameIdx(window);
 }
 
+function getStartTime(frames) {
+  let startFrames = Object.keys(frames)
+    .filter(
+      (k) =>
+        frames[k].redTeam.totalGold === 2500 &&
+        frames[k].blueTeam.totalGold === 2500
+    )
+    .sort();
+
+  if (startFrames.length === 0) {
+    return null;
+  }
+
+  return frames[startFrames[0]].rfc460Timestamp;
+}
+
+function getPlayDurationString(frames) {
+  let startTime = getStartTime(frames);
+
+  if (!startTime) {
+    return "Unknown";
+  }
+
+  let sortedFrameKeys = Object.keys(frames).sort();
+
+  let playTime = 0;
+  let pauseTime = 0;
+  zip(sortedFrameKeys.slice(0, -1), sortedFrameKeys.slice(1)).forEach(
+    ([a, b]) => {
+      let duration =
+        new Date(frames[b].rfc460Timestamp) -
+        new Date(frames[a].rfc460Timestamp);
+
+      if (
+        frames[b].gameState === "paused" ||
+        frames[a].gameState === "paused"
+      ) {
+        pauseTime += duration;
+      }
+      if (
+        frames[b].gameState === "in_game" ||
+        frames[a].gameState === "in_game"
+      ) {
+        playTime += duration;
+      }
+    }
+  );
+
+  let g = moment.utc(playTime).format("HH:mm:ss");
+  return g;
+}
+
 const Animatable = ({ value }) => (
   <span className="important animatable" key={value}>
     {value}
@@ -116,11 +170,15 @@ class Match extends Component {
       window: null,
     };
     this.fetchedWindowTimeStamp = [];
+    this.fetchedFrames = {};
     this.prevTotalKills = 0;
     this.prevTotalTowers = 0;
     this.prevTotalBarons = 0;
     this.prevTotalInhis = 0;
     this.prevTotalDragons = 0;
+    this.gameStartTime = null;
+    this.lastDragonTime = null;
+    this.lastBaronTime = null;
   }
 
   fetchEvent() {
@@ -159,6 +217,11 @@ class Match extends Component {
         if (!res || !res.esportsGameId) {
           return;
         }
+
+        res.frames.forEach((f) => {
+          this.fetchedFrames[f.rfc460Timestamp] = f;
+        });
+
         this.fetchedWindowTimeStamp.push(roundedTimeStamp);
 
         this.setState((prevState) => ({
@@ -327,7 +390,7 @@ class Match extends Component {
                   })}
                 </div>
                 <div className="title">
-                  {moment(lastFrame.rfc460Timestamp).format("HH:mm:ss")}
+                  {getPlayDurationString(this.fetchedFrames)}
                 </div>
                 <div className="red-team">
                   {lastFrame.redTeam.dragons.map((d, i) => {
