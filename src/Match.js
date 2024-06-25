@@ -100,13 +100,23 @@ function getStartTime(frames) {
   return frames[startFrames[0]].rfc460Timestamp;
 }
 
-function getPlayDurationString(frames) {
-  let startTime = getStartTime(frames);
+function getLastBaronTimestamp(frames) {
+  let sortedFrameKeys = Object.keys(frames).sort();
+  let framesPair = zip(sortedFrameKeys.slice(0, -1), sortedFrameKeys.slice(1));
 
-  if (!startTime) {
-    return "???";
-  }
+  framesPair.reverse().forEach(([a, b]) => {
+    if (
+      frames[b].blueTeam.barons > frames[a].blueTeam.barons ||
+      frames[b].redTeam.barons > frames[a].redTeam.barons
+    ) {
+      return new Date(frames[b].rfc460Timestamp);
+    }
+  });
 
+  return null;
+}
+
+function getPlayAndPauseDuration(frames) {
   let sortedFrameKeys = Object.keys(frames).sort();
 
   let playTime = 0;
@@ -132,8 +142,7 @@ function getPlayDurationString(frames) {
     }
   );
 
-  let g = moment.utc(playTime).format("HH:mm:ss");
-  return g;
+  return { playTime, pauseTime };
 }
 
 const Animatable = ({ value }) => (
@@ -176,9 +185,6 @@ class Match extends Component {
     this.prevTotalBarons = 0;
     this.prevTotalInhis = 0;
     this.prevTotalDragons = 0;
-    this.gameStartTime = null;
-    this.lastDragonTime = null;
-    this.lastBaronTime = null;
   }
 
   fetchEvent() {
@@ -230,6 +236,32 @@ class Match extends Component {
         }));
       }
     );
+  }
+
+  getPlayDurationString() {
+    let startTime = getStartTime(this.fetchedFrames);
+
+    if (!startTime) {
+      return "???";
+    }
+
+    let { playTime, pauseTime } = getPlayAndPauseDuration(this.fetchedFrames);
+    return moment.utc(playTime).format("HH:mm:ss");
+  }
+
+  getLastBaronInGameTime() {
+    let lastBaronTimestamp = getLastBaronTimestamp(this.fetchedFrames);
+
+    if (!lastBaronTimestamp) {
+      return "???";
+    }
+
+    let sortedFrameKeys = Object.keys(this.fetchedFrames).sort();
+    let framesAfterBaron = sortedFrameKeys
+      .filter((k) => new Date(k) > lastBaronTimestamp)
+      .map((k) => this.fetchedFrames[k]);
+    let { playTime, pauseTime } = getPlayAndPauseDuration(framesAfterBaron);
+    return moment.utc(playTime).format("HH:mm:ss");
   }
 
   componentDidMount() {
@@ -390,7 +422,8 @@ class Match extends Component {
                   })}
                 </div>
                 <div className="title">
-                  {getPlayDurationString(this.fetchedFrames)}
+                  {this.getPlayDurationString()} (baron:
+                  {this.getLastBaronInGameTime()})
                 </div>
                 <div className="red-team">
                   {lastFrame.redTeam.dragons.map((d, i) => {
