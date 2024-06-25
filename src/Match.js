@@ -128,7 +128,9 @@ function getPlayDuration(frames) {
 
       if (
         frames[b].gameState === "in_game" &&
-        frames[a].gameState === "in_game"
+        frames[a].gameState === "in_game" &&
+        frames[b].blueTeam.totalGold > 0 && // avoid ban pick time
+        frames[b].redTeam.totalGold > 0
       ) {
         playTime += duration;
       }
