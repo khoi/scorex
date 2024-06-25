@@ -261,6 +261,10 @@ img {
   background-image: url(./assets/chemtech-dragon.svg);
 }
 
+.StatsTeamsSummary .dragons .dragon.hextech {
+  background-image: url(./assets/hextech-dragon.svg);
+}
+
 .StatsTeamsSummary .dragons .title {
   flex: 0;
   text-align: center;
