@@ -45,7 +45,7 @@ function Player({
           <img
             alt=""
             className="image"
-            src={`https://ddragon.leagueoflegends.com/cdn/11.1.1/img/champion/${championId}.png`}
+            src={`https://ddragon.leagueoflegends.com/cdn/13.1.1/img/champion/${championId}.png`}
           />
         </div>
         <div className="level">{lvl}</div>

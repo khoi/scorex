@@ -7,11 +7,11 @@ import killIcon from "./assets/kill.svg";
 import Player from "./Player";
 import moment from "moment";
 
-const killSound = new Audio("/sounds/kill.mp3");
+const killSound = new Audio("/sounds/kill.wav");
 const towerSound = new Audio("/sounds/tower.wav");
 const inhiSound = new Audio("/sounds/inhi.wav");
 const baronSound = new Audio("/sounds/baron.wav");
-const dragonSound = new Audio("/sounds/dragon.mp3");
+const dragonSound = new Audio("/sounds/dragon.wav");
 
 function findLastIndex(array, fn) {
   if (!array) return -1;
@@ -156,7 +156,7 @@ class Match extends Component {
 
     this.fetchLiveStatsWindow(this.state.gameId, formattedTimeStamp).then(
       (res) => {
-        if (!res.esportsGameId) {
+        if (!res || !res.esportsGameId) {
           return;
         }
         this.fetchedWindowTimeStamp.push(roundedTimeStamp);
