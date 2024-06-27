@@ -44,7 +44,7 @@ function oddCalculator(
     cloudDiff * spring2021OddCoffData.cloudDiff;
 
   const odds = 2.71828182845904523536 ** logOdds;
-  const winProbability = ((odds / (1 + odds))).toFixed(3);
+  const winProbability = (odds / (1 + odds)).toFixed(3);
   return winProbability;
 }
 
@@ -115,16 +115,6 @@ function isBlueFB(window) {
 
 function isRedFB(window) {
   return redFirstBloodFrameIdx(window) > blueFirstBloodFrameIdx(window);
-}
-
-function oddCSSColor(percentage) {
-  if (percentage <= 40) {
-    return "red";
-  }
-  if (percentage >= 60) {
-    return "green";
-  }
-  return "";
 }
 
 function calculateBlueWinningOdd(window) {
@@ -214,13 +204,14 @@ const Animatable = ({ value }) => (
   </span>
 );
 
-const WinningPercentage = ({blueTeamWinningProbability}) => {
-  const bwp  = blueTeamWinningProbability < 0.000001 ? 0 : blueTeamWinningProbability;
+const WinningPercentage = ({ blueTeamWinningProbability }) => {
+  const bwp =
+    blueTeamWinningProbability < 0.000001 ? 0 : blueTeamWinningProbability;
   const rwp = 1 - bwp;
   const blueTeamWinningPercentage = (bwp * 100.0).toFixed(3) + "%";
   const blueTeamRate = bwp === 0 ? 0 : (1.0 / bwp).toFixed(3);
   const redTeamWinningPercentage = (rwp * 100.0).toFixed(3) + "%";
-  const redTeamRate = rwp === 0 ? 0 : (1.0 / rwp).toFixed(3)
+  const redTeamRate = rwp === 0 ? 0 : (1.0 / rwp).toFixed(3);
 
   return (
     <div className="winning-percentage">
@@ -234,7 +225,7 @@ const WinningPercentage = ({blueTeamWinningProbability}) => {
         <span class="percentage">{redTeamWinningPercentage}</span>
       </div>
     </div>
-  )
+  );
 };
 
 class Match extends Component {
@@ -502,7 +493,11 @@ class Match extends Component {
         <>
           <div className="StatsTeams">
             <div className="StatsTeamsSummary">
-              <WinningPercentage blueTeamWinningProbability={calculateBlueWinningOdd(this.state.window)} />
+              <WinningPercentage
+                blueTeamWinningProbability={calculateBlueWinningOdd(
+                  this.state.window
+                )}
+              />
               <div className="dragons">
                 <div className="blue-team">
                   {lastFrame.blueTeam.dragons.map((d, i) => {
