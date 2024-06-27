@@ -257,8 +257,16 @@ img {
   background-image: url(./assets/elder-dragon.svg);
 }
 
+.StatsTeamsSummary .dragons .dragon.chemtech {
+  background-image: url(./assets/chemtech-dragon.svg);
+}
+
+.StatsTeamsSummary .dragons .dragon.hextech {
+  background-image: url(./assets/hextech-dragon.svg);
+}
+
 .StatsTeamsSummary .dragons .title {
-  flex: 0;
+  flex: 1;
   text-align: center;
   color: #8fa3b0;
   font-size: 3rem;

@@ -5,6 +5,15 @@ import baronIcon from "./assets/baron.svg";
 import towerIcon from "./assets/tower.svg";
 import killIcon from "./assets/kill.svg";
 import Player from "./Player";
+import moment from "moment";
+
+const killSound = new Audio("/sounds/kill.wav");
+const towerSound = new Audio("/sounds/tower.wav");
+const inhiSound = new Audio("/sounds/inhi.wav");
+const baronSound = new Audio("/sounds/baron.wav");
+const dragonSound = new Audio("/sounds/dragon.wav");
+
+const zip = (a, b) => a.map((k, i) => [k, b[i]]);
 
 const spring2021OddCoffData = {
   split: "Spring2021",
@@ -59,6 +68,7 @@ function formatTimeStamp(e) {
 }
 
 function getLastFrame(window) {
+  if (!window) return null;
   return window.frames[window.frames.length - 1];
 }
 
@@ -83,12 +93,12 @@ function getRedPlayers(window) {
   return window.gameMetadata.redTeamMetadata.participantMetadata;
 }
 
-function getBluePlayersStats(window) {
-  return getLastFrame(window).blueTeam.participants;
+function getBluePlayersStatsForFrame(frame) {
+  return frame.blueTeam.participants;
 }
 
-function getRedPlayersStats(window) {
-  return getLastFrame(window).redTeam.participants;
+function getRedPlayersStatsForFrame(frame) {
+  return frame.redTeam.participants;
 }
 
 function blueFirstBloodFrameIdx(window) {
@@ -142,8 +152,64 @@ function calculateBlueWinningOdd(window) {
   );
 }
 
+function getStartTime(frames) {
+  let startFrames = Object.keys(frames)
+    .filter(
+      (k) =>
+        frames[k].redTeam.totalGold === 2500 &&
+        frames[k].blueTeam.totalGold === 2500
+    )
+    .sort();
+
+  if (startFrames.length === 0) {
+    return null;
+  }
+
+  return frames[startFrames[0]].rfc460Timestamp;
+}
+
+function getLastBaronTimestamp(frames) {
+  let sortedFrameKeys = Object.keys(frames).sort();
+  let framesPair = zip(sortedFrameKeys.slice(0, -1), sortedFrameKeys.slice(1));
+
+  framesPair.reverse().forEach(([a, b]) => {
+    if (
+      frames[b].blueTeam.barons > frames[a].blueTeam.barons ||
+      frames[b].redTeam.barons > frames[a].redTeam.barons
+    ) {
+      return new Date(frames[b].rfc460Timestamp);
+    }
+  });
+
+  return null;
+}
+
+function getPlayDuration(frames) {
+  let sortedFrameKeys = Object.keys(frames).sort();
+
+  let playTime = 0;
+  zip(sortedFrameKeys.slice(0, -1), sortedFrameKeys.slice(1)).forEach(
+    ([a, b]) => {
+      let duration =
+        new Date(frames[b].rfc460Timestamp) -
+        new Date(frames[a].rfc460Timestamp);
+
+      if (
+        frames[b].gameState === "in_game" &&
+        frames[a].gameState === "in_game" &&
+        frames[b].blueTeam.totalGold > 0 && // avoid ban pick time
+        frames[b].redTeam.totalGold > 0
+      ) {
+        playTime += duration;
+      }
+    }
+  );
+
+  return playTime;
+}
+
 const Animatable = ({ value }) => (
-  <span class="important animatable" key={value}>
+  <span className="important animatable" key={value}>
     {value}
   </span>
 );
@@ -200,6 +266,12 @@ class Match extends Component {
       window: null,
     };
     this.fetchedWindowTimeStamp = [];
+    this.fetchedFrames = {};
+    this.prevTotalKills = 0;
+    this.prevTotalTowers = 0;
+    this.prevTotalBarons = 0;
+    this.prevTotalInhis = 0;
+    this.prevTotalDragons = 0;
   }
 
   fetchEvent() {
@@ -235,16 +307,48 @@ class Match extends Component {
 
     this.fetchLiveStatsWindow(this.state.gameId, formattedTimeStamp).then(
       (res) => {
-        if (!res.esportsGameId) {
+        if (!res || !res.esportsGameId) {
           return;
         }
+
+        res.frames.forEach((f) => {
+          this.fetchedFrames[f.rfc460Timestamp] = f;
+        });
+
         this.fetchedWindowTimeStamp.push(roundedTimeStamp);
+
         this.setState((prevState) => ({
           ...prevState,
           window: res,
         }));
       }
     );
+  }
+
+  getPlayDurationString() {
+    let startTime = getStartTime(this.fetchedFrames);
+
+    if (!startTime) {
+      return "???";
+    }
+
+    let playTime = getPlayDuration(this.fetchedFrames);
+    return moment.utc(playTime).format("HH:mm:ss");
+  }
+
+  getLastBaronInGameTime() {
+    let lastBaronTimestamp = getLastBaronTimestamp(this.fetchedFrames);
+
+    if (!lastBaronTimestamp) {
+      return "???";
+    }
+
+    let sortedFrameKeys = Object.keys(this.fetchedFrames).sort();
+    let framesAfterBaron = sortedFrameKeys
+      .filter((k) => new Date(k) > lastBaronTimestamp)
+      .map((k) => this.fetchedFrames[k]);
+    let playTime = getPlayDuration(framesAfterBaron);
+    return moment.utc(playTime).format("HH:mm:ss");
   }
 
   componentDidMount() {
@@ -256,7 +360,7 @@ class Match extends Component {
 
     this.fetchWindowId = setInterval(() => {
       if (this.fetchedWindowTimeStamp.length === 0) {
-        this.fetchWindow(+new Date() - 30 * 1000); // initial fetch
+        this.fetchWindow(+new Date() - 50 * 1000); // initial fetch
         return;
       }
 
@@ -274,39 +378,58 @@ class Match extends Component {
   }
 
   render() {
-    console.log(this.state);
+    const lastFrame = getLastFrame(this.state.window);
 
-    const blueInhibitors = this.state.window
-      ? getLastFrame(this.state.window).blueTeam.inhibitors
-      : 0;
-    const blueBarons = this.state.window
-      ? getLastFrame(this.state.window).blueTeam.barons
-      : 0;
-    const blueTowers = this.state.window
-      ? getLastFrame(this.state.window).blueTeam.towers
-      : 0;
-    const blueKills = this.state.window
-      ? getBluePlayersStats(this.state.window).reduce(
+    const blueInhibitors = lastFrame ? lastFrame.blueTeam.inhibitors : 0;
+    const blueBarons = lastFrame ? lastFrame.blueTeam.barons : 0;
+    const blueTowers = lastFrame ? lastFrame.blueTeam.towers : 0;
+    const blueKills = lastFrame
+      ? getBluePlayersStatsForFrame(lastFrame).reduce(
           (acc, val) => acc + val.kills,
           0
         )
       : 0;
 
-    const redInhibitors = this.state.window
-      ? getLastFrame(this.state.window).redTeam.inhibitors
-      : 0;
-    const redBarons = this.state.window
-      ? getLastFrame(this.state.window).redTeam.barons
-      : 0;
-    const redTowers = this.state.window
-      ? getLastFrame(this.state.window).redTeam.towers
-      : 0;
-    const redKills = this.state.window
-      ? getRedPlayersStats(this.state.window).reduce(
+    const redInhibitors = lastFrame ? lastFrame.redTeam.inhibitors : 0;
+    const redBarons = lastFrame ? lastFrame.redTeam.barons : 0;
+    const redTowers = lastFrame ? lastFrame.redTeam.towers : 0;
+    const redKills = lastFrame
+      ? getRedPlayersStatsForFrame(lastFrame).reduce(
           (acc, val) => acc + val.kills,
           0
         )
       : 0;
+
+    if (lastFrame) {
+      if (this.prevTotalKills < redKills + blueKills) {
+        killSound.play();
+        this.prevTotalKills = redKills + blueKills;
+      }
+
+      if (this.prevTotalTowers < redTowers + blueTowers) {
+        towerSound.play();
+        this.prevTotalTowers = redTowers + blueTowers;
+      }
+
+      if (this.prevTotalInhis < redInhibitors + blueInhibitors) {
+        inhiSound.play();
+        this.prevTotalInhis = redInhibitors + blueInhibitors;
+      }
+
+      if (this.prevTotalBarons < redBarons + blueBarons) {
+        baronSound.play();
+        this.prevTotalBarons = redBarons + blueBarons;
+      }
+
+      if (
+        this.prevTotalDragons <
+        lastFrame.blueTeam.dragons.length + lastFrame.redTeam.dragons.length
+      ) {
+        dragonSound.play();
+        this.prevTotalDragons =
+          lastFrame.blueTeam.dragons.length + lastFrame.redTeam.dragons.length;
+      }
+    }
 
     let header = this.state.event ? (
       <>
@@ -382,22 +505,18 @@ class Match extends Component {
               <WinningPercentage blueTeamWinningProbability={calculateBlueWinningOdd(this.state.window)} />
               <div className="dragons">
                 <div className="blue-team">
-                  {getLastFrame(this.state.window).blueTeam.dragons.map(
-                    (d, i) => {
-                      return (
-                        <div key={i} className={"animatable dragon " + d} />
-                      );
-                    }
-                  )}
+                  {lastFrame.blueTeam.dragons.map((d, i) => {
+                    return <div key={i} className={"animatable dragon " + d} />;
+                  })}
+                </div>
+                <div className="title">
+                  {this.getPlayDurationString()} (baron:
+                  {this.getLastBaronInGameTime()})
                 </div>
                 <div className="red-team">
-                  {getLastFrame(this.state.window).redTeam.dragons.map(
-                    (d, i) => {
-                      return (
-                        <div key={i} className={"animatable dragon " + d} />
-                      );
-                    }
-                  )}
+                  {lastFrame.redTeam.dragons.map((d, i) => {
+                    return <div key={i} className={"animatable dragon " + d} />;
+                  })}
                 </div>
               </div>
               <div className="gold">
@@ -421,18 +540,16 @@ class Match extends Component {
                 </div>
                 <div className="totals">
                   <div className="blue-team">
-                    {getLastFrame(this.state.window).blueTeam.totalGold} (
-                    {getLastFrame(this.state.window).blueTeam.totalGold -
-                      getLastFrame(this.state.window).redTeam.totalGold}
+                    {lastFrame.blueTeam.totalGold} (
+                    {lastFrame.blueTeam.totalGold - lastFrame.redTeam.totalGold}
                     )
                   </div>
                   <div className="title">
-                    {getLastFrame(this.state.window).gameState.toUpperCase()}
+                    {lastFrame.gameState.toUpperCase()}
                   </div>
                   <div className="red-team">
-                    {getLastFrame(this.state.window).redTeam.totalGold} (
-                    {getLastFrame(this.state.window).redTeam.totalGold -
-                      getLastFrame(this.state.window).blueTeam.totalGold}
+                    {lastFrame.redTeam.totalGold} (
+                    {lastFrame.redTeam.totalGold - lastFrame.blueTeam.totalGold}
                     )
                   </div>
                 </div>
@@ -494,25 +611,25 @@ class Match extends Component {
                       summonerName={p.summonerName}
                       championId={p.championId}
                       currentHealth={
-                        getBluePlayersStats(this.state.window)[i].currentHealth
+                        getBluePlayersStatsForFrame(lastFrame)[i].currentHealth
                       }
                       maxHealth={
-                        getBluePlayersStats(this.state.window)[i].maxHealth
+                        getBluePlayersStatsForFrame(lastFrame)[i].maxHealth
                       }
-                      lvl={getBluePlayersStats(this.state.window)[i].level}
-                      k={getBluePlayersStats(this.state.window)[i].kills}
-                      d={getBluePlayersStats(this.state.window)[i].deaths}
-                      a={getBluePlayersStats(this.state.window)[i].assists}
-                      cs={getBluePlayersStats(this.state.window)[i].creepScore}
-                      gold={getBluePlayersStats(this.state.window)[i].totalGold}
+                      lvl={getBluePlayersStatsForFrame(lastFrame)[i].level}
+                      k={getBluePlayersStatsForFrame(lastFrame)[i].kills}
+                      d={getBluePlayersStatsForFrame(lastFrame)[i].deaths}
+                      a={getBluePlayersStatsForFrame(lastFrame)[i].assists}
+                      cs={getBluePlayersStatsForFrame(lastFrame)[i].creepScore}
+                      gold={getBluePlayersStatsForFrame(lastFrame)[i].totalGold}
                     />
                   );
                 })}
               </div>
               <div className="gold-diffs">
                 {[0, 1, 2, 3, 4].map((idx) => {
-                  let blueP = getBluePlayersStats(this.state.window)[idx];
-                  let redP = getRedPlayersStats(this.state.window)[idx];
+                  let blueP = getBluePlayersStatsForFrame(lastFrame)[idx];
+                  let redP = getRedPlayersStatsForFrame(lastFrame)[idx];
                   let diff = blueP.totalGold - redP.totalGold;
                   return (
                     <div key={idx} className="wrapper">
@@ -532,17 +649,17 @@ class Match extends Component {
                       summonerName={p.summonerName}
                       championId={p.championId}
                       currentHealth={
-                        getRedPlayersStats(this.state.window)[i].currentHealth
+                        getRedPlayersStatsForFrame(lastFrame)[i].currentHealth
                       }
                       maxHealth={
-                        getRedPlayersStats(this.state.window)[i].maxHealth
+                        getRedPlayersStatsForFrame(lastFrame)[i].maxHealth
                       }
-                      lvl={getRedPlayersStats(this.state.window)[i].level}
-                      k={getRedPlayersStats(this.state.window)[i].kills}
-                      d={getRedPlayersStats(this.state.window)[i].deaths}
-                      a={getRedPlayersStats(this.state.window)[i].assists}
-                      cs={getRedPlayersStats(this.state.window)[i].creepScore}
-                      gold={getRedPlayersStats(this.state.window)[i].totalGold}
+                      lvl={getRedPlayersStatsForFrame(lastFrame)[i].level}
+                      k={getRedPlayersStatsForFrame(lastFrame)[i].kills}
+                      d={getRedPlayersStatsForFrame(lastFrame)[i].deaths}
+                      a={getRedPlayersStatsForFrame(lastFrame)[i].assists}
+                      cs={getRedPlayersStatsForFrame(lastFrame)[i].creepScore}
+                      gold={getRedPlayersStatsForFrame(lastFrame)[i].totalGold}
                     />
                   );
                 })}
@@ -551,7 +668,9 @@ class Match extends Component {
           </div>
         </>
       ) : (
-        <div>Loading</div>
+        <div id="match_loading" style={{ fontSize: "40px" }}>
+          LOADING CLICK ANYWHERE TO ENABLE SOUND
+        </div>
       );
 
     return (
